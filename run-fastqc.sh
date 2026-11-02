@@ -21,8 +21,4 @@ ln -s ${DATASTORE}/reference/R64-1-1.112.gtf .
 ln -s ${DATASTORE}/${GROUP}/${XX}_1.fastq.gz ${XX}_1.fastq.gz
 ln -s ${DATASTORE}/${GROUP}/${XX}_2.fastq.gz ${XX}_2.fastq.gz
 
-for k in `ls -1 *.fastq.gz`; 
-do fastqc -t 2 ${k};
-done
-
-multiqc .
+fastqc -t 2 ${XX}_*.fastq.gz
