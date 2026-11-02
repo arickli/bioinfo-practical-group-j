@@ -10,7 +10,7 @@
 
 DATASTORE="/data/users/lfalquet/class/SBI.07107/YEAST/"
 
-GROUPE=$1
+GROUP=$1
 XX=$2
 
 mkdir /data/users/${USER}/bwa${XX}
