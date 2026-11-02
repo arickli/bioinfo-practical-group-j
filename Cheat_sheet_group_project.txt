@@ -1,0 +1,25 @@
+### Cheat sheet for linux
+
+### Login cluster fsuter
+ssh <user>@login8.hpc.binf.unibe.ch
+# IBU password cat ~/.ssh/id_ed25519.pubcat ~/.ssh/id_ed25519.pub
+
+### run active jobs
+run --cpus-per-task=1  --mem-per-cpu=500M --time=00:05:00 --partition=pshort_el8 --pty bash
+
+### submit jobs
+sbatch --cpus-per-task=1 --mem-per-cpu=100M --time=00:05:00 --partition=pshort_el8
+
+### sbatch structure
+
+#!/bin/env bash
+
+#SBATCH --cpus-per-task=1 
+#SBATCH --mem-per-cpu=10M 
+#SBATCH --time=00:00:10
+#SBATCH --partition=pshort_el8
+#SBATCH --job-name=<JobName>
+#SBATCH --error=error_%x_%j.txt
+#SBATCH --output=output_%x_%j.txt
+#SBATCH --mail-user=<name.surname>@students.unibe.ch
+#SBATCH --mail-type=begin,end
