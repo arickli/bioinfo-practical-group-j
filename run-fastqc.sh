@@ -10,17 +10,26 @@
 #SBATCH --error=error_%x_%j.txt
 #SBATCH --output=output_%x_%j.txt
 
+set -euo pipefail
+
 DATASTORE="/data/users/lfalquet/class/SBI.07107/YEAST/"
 
 GROUP=$1
 XX=$2
 
-mkdir /data/users/${USER}/bwa/${XX}
-cd /data/users/${USER}/bwa/${XX}
+WORKDIR="/data/users/${USER}/bwa/${XX}"
+OUTDIR="${WORKDIR}/output/${XX}"
 
-ln -s ${DATASTORE}/reference/R64-1-1.112.fa .
-ln -s ${DATASTORE}/reference/R64-1-1.112.gtf .
-ln -s ${DATASTORE}/${GROUP}/${XX}_1.fastq.gz ${XX}_1.fastq.gz
-ln -s ${DATASTORE}/${GROUP}/${XX}_2.fastq.gz ${XX}_2.fastq.gz
+mkdir -p "${WORKDIR}"
+cd "${WORKDIR}"
 
-fastqc -t 2 ${XX}_*.fastq.gz
+# Create the strain-specific output folder for FastQC reports
+mkdir -p "${OUTDIR}"
+
+ln -s "${DATASTORE}/reference/R64-1-1.112.fa" .
+ln -s "${DATASTORE}/reference/R64-1-1.112.gtf" .
+ln -s "${DATASTORE}/${GROUP}/${XX}_1.fastq.gz" "${XX}_1.fastq.gz"
+ln -s "${DATASTORE}/${GROUP}/${XX}_2.fastq.gz" "${XX}_2.fastq.gz"
+
+# -o specifies where all HTML and zip results will be saved
+fastqc -t 2 -o "${OUTDIR}" ${XX}_*.fastq.gz
