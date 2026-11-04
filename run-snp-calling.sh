@@ -1,26 +1,27 @@
 #!/bin/bash
 
 #SBATCH --mail-type=fail
-#SBATCH --job-name="snp calling"
+#SBATCH --job-name="snp_calling"
 #SBATCH --nodes=1
-#SBATCH --cpus-per-task=2
+#SBATCH --cpus-per-task=8
 #SBATCH --time=2:00:00
 #SBATCH --mem=25G
 #SBATCH --partition=pcourse
 #SBATCH --error=error_%x_%j.txt
 #SBATCH --output=output_%x_%j.txt
 
+XX=$1
 
+# 2. Navigate to SNP directory
+WORK_DIR="/data/users/${USER}/bioinfo-practical-group-j"
+mkdir -p "${WORK_DIR}/snp"
+cd "${WORK_DIR}/snp" || exit 1
 
+# 3. Symlink reference files (including index)
+DATASTORE="/data/users/lfalquet/class/SBI.07107/YEAST"
+ln -sf "${DATASTORE}/reference/R64-1-1.112.fa" .
+ln -sf "${DATASTORE}/reference/R64-1-1.112.fa.fai" .
+ln -sf "${DATASTORE}/reference/R64-1-1.112.gtf" .
 
-mkdir -p /data/users/${USER}/bioinfo-practical-group-j/snp
-cd /data/users/${USER}/bioinfo-practical-group-j/snp
-
-DATASTORE="/data/users/lfalquet/class/SBI.07107/YEAST/"
-ln -s ${DATASTORE}/reference/R64-1-1.112.fa .
-ln -s ${DATASTORE}/reference/R64-1-1.112.gtf .
-ln -s /data/users/${USER}/bwa*/*.bam .
-LIST_OF_BAM_FILES=`ls -h bwa*/*.bam`
-
-
-bcftools mpileup -Ou --threads 8 -f R64-1-1.112.fa ${LIST_OF_BAM_FILES} | bcftools call -vc -Ov --threads 8 -o all_strains.vcf
+bcftools mpileup -Ou --threads 8 -f R64-1-1.112.fa ${XX}.bam | bcftools call -vc -Oz --threads 8 -o ${XX}.vcf.gz
+tabix ${XX}.vcf.gz
