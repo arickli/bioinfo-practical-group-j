@@ -11,6 +11,8 @@
 #SBATCH --output=output_%x_%j.txt
 
 
+
+
 mkdir -p /data/users/${USER}/bioinfo-practical-group-j/snp
 cd /data/users/${USER}/bioinfo-practical-group-j/snp
 
@@ -18,4 +20,7 @@ DATASTORE="/data/users/lfalquet/class/SBI.07107/YEAST/"
 ln -s ${DATASTORE}/reference/R64-1-1.112.fa .
 ln -s ${DATASTORE}/reference/R64-1-1.112.gtf .
 ln -s /data/users/${USER}/bwa*/*.bam .
+LIST_OF_BAM_FILES=`ls -h bwa*/*.bam`
 
+
+bcftools mpileup -Ou --threads 8 -f R64-1-1.112.fa ${LIST_OF_BAM_FILES} | bcftools call -vc -Ov --threads 8 -o all_strains.vcf
