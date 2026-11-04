@@ -7,3 +7,4 @@ slurm-out/
 slurm*
 bwa*
 snp/
+snpDV_deepVariant/
