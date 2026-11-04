@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #SBATCH --mail-type=fail
-#SBATCH --job-name="snp_calling"
+#SBATCH --job-name="merge vcf files"
 #SBATCH --nodes=1
 #SBATCH --cpus-per-task=8
 #SBATCH --time=2:00:00
