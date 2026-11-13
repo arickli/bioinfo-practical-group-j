@@ -5,7 +5,7 @@
 #SBATCH --nodes=1
 #SBATCH --cpus-per-task=8
 #SBATCH --time=2:58:00
-#SBATCH --mem=100G
+#SBATCH --mem=200G
 #SBATCH --partition=pcourse
 
 NAME=$4 #fasta file of draft genome
@@ -28,6 +28,6 @@ export APPTAINER_TMPDIR="/data/users/${USER}/bioinfo-practical-group-j/groupJ/fi
 export SIF_CONTAINER_BAKTA="/data/users/lfalquet/class/SBI.07107/scripts/bakta_latest.sif"
 export APPTAINERENV_MPLCONFIGDIR=/tmp/${USER}_matplotlib
 
-apptainer exec --containall --bind /data,/scratch  --bind ${HOME}:/mnt  --bind $APPTAINER_TMPDIR:/home/${USER} --bind $APPTAINER_CACHEDIR:/tmp ${SIF_CONTAINER_BAKTA} bakta --db ${BAKTA_DB} --verbose --compliant --output bakta_${BC} --prefix ${BC} --locus-tag ${BC} --genus ${genus} --species ${species} --threads ${SLURM_CPUS_PER_TASK} ${NAME}
+apptainer exec --containall --bind /data,/scratch  --bind ${HOME}:/mnt  --bind $APPTAINER_TMPDIR:/home/${USER} --bind $APPTAINER_CACHEDIR:/tmp ${SIF_CONTAINER_BAKTA} bakta --db ${BAKTA_DB} --force --verbose --compliant --output bakta_${BC} --prefix ${BC} --locus-tag ${BC} --genus ${genus} --species ${species} --threads ${SLURM_CPUS_PER_TASK} ${NAME}
 
 
